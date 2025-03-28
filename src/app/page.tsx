@@ -1,249 +1,418 @@
+"use client";
 import Image from "next/image";
-import AuthContainer from "@/components/auth/AuthContainer";
+import { useEffect, useRef } from "react";
+import Nav from "./components/nav";
+import { FaArrowRight } from "react-icons/fa6";
+import {
+  RiUserSettingsLine,
+  RiFileUploadLine,
+  RiSearchLine,
+} from "react-icons/ri";
 
 export default function Home() {
+  const featuresRef = useRef<HTMLElement | null>(null);
+  const statsRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("animate-in");
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    const featureCards = document.querySelectorAll(".feature-card");
+    featureCards.forEach((card) => {
+      observer.observe(card);
+    });
+
+    const statItems = document.querySelectorAll(".stat-item");
+    statItems.forEach((item) => {
+      observer.observe(item);
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
-      {/* Header */}
-      <header className="bg-white shadow-sm py-4">
-        <div className="container mx-auto px-4 flex items-center justify-between">
-          <div className="flex items-center">
-            <Image
-              className=""
-              src="/logo.svg"
-              alt="DocShare logo"
-              width={30}
-              height={30}
-              priority
-            />
-          </div>
-          <nav className="hidden md:flex space-x-6">
-            <a href="#" className="text-gray-600 hover:text-blue-600">
-              Trang chủ
-            </a>
-            <a href="#" className="text-gray-600 hover:text-blue-600">
-              Tài liệu
-            </a>
-            <a href="#" className="text-gray-600 hover:text-blue-600">
-              Về chúng tôi
-            </a>
-            <a href="#" className="text-gray-600 hover:text-blue-600">
-              Liên hệ
-            </a>
-          </nav>
-        </div>
-      </header>
+    <div className="min-h-screen bg-black text-white overflow-hidden">
+      {/* Cursor follow effect */}
+      <div className="cursor-follow fixed w-[50vw] h-[50vh] rounded-full blur-[100px] bg-blue-500/20 pointer-events-none opacity-70 transition-transform duration-[800ms] ease-out -z-10" />
 
-      {/* Main content */}
-      <main className="flex-1 flex flex-col md:flex-row container mx-auto px-4 py-12 gap-8">
-        {/* Left section - Value proposition */}
-        <div className="md:w-1/2 flex flex-col justify-center">
-          <h1 className="text-4xl font-bold text-gray-800 mb-4">
-            Nền tảng chia sẻ tài liệu hàng đầu cho cộng đồng học tập
-          </h1>
-          <p className="text-lg text-gray-600 mb-6">
-            Truy cập hàng ngàn tài liệu chất lượng, chia sẻ kiến thức và kết nối
-            với cộng đồng học tập toàn cầu.
-          </p>
-          <div className="flex flex-wrap gap-4">
-            <a
-              href="#features"
-              className="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              Khám phá ngay
-            </a>
-            <a
-              href="#how-it-works"
-              className="px-6 py-3 border border-blue-600 text-blue-600 font-medium rounded-lg hover:bg-blue-50 transition-colors"
-            >
-              Tìm hiểu thêm
-            </a>
-          </div>
+      <Nav />
+
+      {/* Hero section */}
+      <section className="min-h-screen flex flex-col justify-center relative overflow-hidden mt-10">
+        {/* WebGL Canvas Background */}
+        <div className="absolute inset-0 -z-10">
+          <div id="canvas-container" className="absolute inset-0"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-black"></div>
         </div>
 
-        {/* Right section - Auth forms */}
-        <div className="md:w-1/2 flex justify-center items-center mt-8 md:mt-0">
-          <AuthContainer />
+        {/* Distortion overlay */}
+        <div className="absolute inset-0 bg-noise opacity-5 mix-blend-soft-light"></div>
+
+        <div className="container mx-auto px-8 relative z-10">
+          <div className="grid grid-cols-1 gap-16">
+            <div className="space-y-8 text-center max-w-5xl mx-auto">
+              <div className="relative mb-6">
+                <h1 className="text-6xl md:text-8xl xl:text-9xl font-black leading-none uppercase split-text-animation tracking-tighter">
+                  <div className="overflow-hidden">
+                    <span className="inline-block animate-reveal-text-up">
+                      Nền tảng
+                    </span>
+                  </div>
+                  <div className="overflow-hidden">
+                    <span className="inline-block animate-reveal-text-up animation-delay-100">
+                      chia sẻ tài liệu
+                    </span>
+                  </div>
+                  <div className="overflow-hidden">
+                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 inline-block animate-reveal-text-up animation-delay-200">
+                      hàng đầu.
+                    </span>
+                  </div>
+                </h1>
+
+                <div className="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] rounded-full blur-[120px] bg-gradient-to-br from-blue-600/20 via-purple-600/20 to-pink-600/20 opacity-70"></div>
+              </div>
+
+              <p className="text-white/70 text-xl md:text-2xl max-w-2xl mx-auto leading-relaxed font-light">
+                Truy cập hàng ngàn tài liệu chất lượng, chia sẻ kiến thức và kết
+                nối với cộng đồng học tập toàn cầu.
+              </p>
+
+              <div className="flex flex-wrap gap-6 justify-center pt-8">
+                <a
+                  href="#features"
+                  className="magnetic-button group relative px-10 py-5 overflow-hidden rounded-full"
+                >
+                  <span className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 opacity-90 group-hover:opacity-100 transition-opacity duration-500"></span>
+                  <span className="absolute inset-0 opacity-0 group-hover:opacity-20 bg-[radial-gradient(circle,_white_10%,_transparent_70%)] transition-opacity duration-500"></span>
+                  <span className="relative z-10 text-white text-lg uppercase tracking-wider font-medium">
+                    Khám phá ngay
+                  </span>
+                </a>
+
+                <a
+                  href="/auth/login"
+                  className="magnetic-button group relative px-10 py-5 overflow-hidden rounded-full"
+                >
+                  <span className="absolute inset-0 border-2 border-white/30 group-hover:border-white/60 rounded-full transition-colors duration-500"></span>
+                  <span className="absolute inset-0 opacity-0 group-hover:opacity-10 bg-white transition-opacity duration-500"></span>
+                  <span className="relative z-10 text-white/90 text-lg uppercase tracking-wider font-medium">
+                    Đăng nhập
+                  </span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* Scroll indicator */}
+          <div className="absolute bottom-5 right-5">
+            <div className="flex flex-col items-center space-y-4">
+              <span className="text-white/40 text-xs uppercase tracking-widest">
+                Cuộn xuống
+              </span>
+              <div className="mouse-scroll-indicator">
+                <div className="mouse border-2 border-white/30 w-8 h-14 rounded-full flex justify-center p-1">
+                  <div className="scroller bg-white/70 w-1 h-3 rounded-full animate-scroll"></div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </main>
+      </section>
 
       {/* Features section */}
-      <section id="features" className="bg-white py-16">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">
-            Tính năng nổi bật
-          </h2>
+      <section id="features" ref={featuresRef} className="py-32 relative">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(25,65,201,0.15),transparent_70%)] z-0"></div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="p-6 bg-slate-50 rounded-xl">
-              <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-4">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                  />
-                </svg>
+        {/* Parallax elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div
+            className="parallax-element absolute -top-20 -left-20 w-80 h-80 rounded-full bg-blue-600/10 blur-3xl"
+            data-parallax-speed="-0.2"
+          ></div>
+          <div
+            className="parallax-element absolute top-1/3 -right-20 w-96 h-96 rounded-full bg-purple-600/10 blur-3xl"
+            data-parallax-speed="0.3"
+          ></div>
+          <div
+            className="parallax-element absolute bottom-0 left-1/4 w-64 h-64 rounded-full bg-pink-600/10 blur-3xl"
+            data-parallax-speed="-0.1"
+          ></div>
+        </div>
+
+        <div className="container mx-auto px-8 relative z-10">
+          <div className="text-center mb-24">
+            <h2 className="inline-block text-sm uppercase tracking-[0.2em] text-white/50 mb-4">
+              Tính năng nổi bật
+            </h2>
+            <h3 className="text-5xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-white/80 leading-tight max-w-5xl mx-auto">
+              Khai phá tiềm năng học tập
+            </h3>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-16">
+            <div className="feature-card group opacity-0 translate-y-8 transition-all duration-700 perspective">
+              <div className="relative h-full transform-style-3d hover:rotate-y-10 hover:rotate-x-10 transition-transform duration-700">
+                <div className="bg-black/40 backdrop-blur-md border border-white/10 rounded-2xl p-10 h-full hover:shadow-xl hover:shadow-purple-500/5 transition-all duration-500 transform-style-3d">
+                  <div className="w-20 h-20 mb-8 relative">
+                    <div className="absolute inset-0 bg-purple-500/20 rounded-2xl rotate-6 group-hover:rotate-12 transition-transform duration-500 delay-100"></div>
+                    <div className="absolute inset-0 bg-black rounded-2xl flex items-center justify-center">
+                      {/* Replace SVG with React Icons */}
+                      <RiUserSettingsLine className="h-10 w-10 text-purple-400 transform group-hover:scale-110 transition-transform duration-500" />
+                    </div>
+                  </div>
+                  <h3 className="text-2xl font-medium mb-4 group-hover:text-purple-400 transition-colors duration-300">
+                    Giao diện thân thiện, dễ sử dụng
+                  </h3>
+                  <p className="text-white/60 leading-relaxed text-lg">
+                    Thiết kế tối giản, trực quan giúp bạn dễ dàng tìm kiếm, lưu
+                    trữ và chia sẻ tài liệu một cách nhanh chóng.
+                  </p>
+
+                  <div className="mt-8 pt-6 border-t border-white/5">
+                    <a
+                      href="#"
+                      className="group inline-flex items-center text-purple-400 hover:text-purple-300"
+                    >
+                      <span>Xem thêm</span>
+                      {/* Replace SVG with React Icons */}
+                      <FaArrowRight className="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform duration-300" />
+                    </a>
+                  </div>
+                </div>
+
+                {/* 3D effect elements */}
+                <div className="absolute inset-0 rounded-2xl border border-white/5 transform translate-z-20 pointer-events-none"></div>
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-purple-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform translate-z-10 pointer-events-none"></div>
               </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                Thư viện tài liệu phong phú
-              </h3>
-              <p className="text-gray-600">
-                Truy cập hàng ngàn tài liệu đa dạng lĩnh vực được chọn lọc bởi
-                chuyên gia.
-              </p>
             </div>
 
-            <div className="p-6 bg-slate-50 rounded-xl">
-              <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-4">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
-                  />
-                </svg>
+            <div className="feature-card group opacity-0 translate-y-8 transition-all duration-700 perspective">
+              <div className="relative h-full transform-style-3d hover:rotate-y-10 hover:rotate-x-10 transition-transform duration-700">
+                <div className="bg-black/40 backdrop-blur-md border border-white/10 rounded-2xl p-10 h-full hover:shadow-xl hover:shadow-pink-500/5 transition-all duration-500 transform-style-3d">
+                  <div className="w-20 h-20 mb-8 relative">
+                    <div className="absolute inset-0 bg-pink-500/20 rounded-2xl rotate-6 group-hover:rotate-12 transition-transform duration-500 delay-100"></div>
+                    <div className="absolute inset-0 bg-black rounded-2xl flex items-center justify-center">
+                      {/* Replace SVG with React Icons */}
+                      <RiFileUploadLine className="h-10 w-10 text-pink-400 transform group-hover:scale-110 transition-transform duration-500" />
+                    </div>
+                  </div>
+                  <h3 className="text-2xl font-medium mb-4 group-hover:text-pink-400 transition-colors duration-300">
+                    Dễ dàng tải lên và chia sẻ
+                  </h3>
+                  <p className="text-white/60 leading-relaxed text-lg">
+                    Chia sẻ tài liệu của bạn với mọi người một cách nhanh chóng
+                    và dễ dàng. Hỗ trợ nhiều định dạng tệp khác nhau.
+                  </p>
+
+                  <div className="mt-8 pt-6 border-t border-white/5">
+                    <a
+                      href="#"
+                      className="group inline-flex items-center text-pink-400 hover:text-pink-300"
+                    >
+                      <span>Xem thêm</span>
+                      {/* Replace SVG with React Icons */}
+                      <FaArrowRight className="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform duration-300" />
+                    </a>
+                  </div>
+                </div>
+
+                {/* 3D effect elements */}
+                <div className="absolute inset-0 rounded-2xl border border-white/5 transform translate-z-20 pointer-events-none"></div>
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-pink-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform translate-z-10 pointer-events-none"></div>
               </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                Cộng đồng kết nối
-              </h3>
-              <p className="text-gray-600">
-                Trao đổi, thảo luận và học hỏi từ cộng đồng người dùng đam mê
-                kiến thức.
-              </p>
             </div>
 
-            <div className="p-6 bg-slate-50 rounded-xl">
-              <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-4">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                  />
-                </svg>
+            <div className="feature-card group opacity-0 translate-y-8 transition-all duration-700 perspective">
+              <div className="relative h-full transform-style-3d hover:rotate-y-10 hover:rotate-x-10 transition-transform duration-700">
+                <div className="bg-black/40 backdrop-blur-md border border-white/10 rounded-2xl p-10 h-full hover:shadow-xl hover:shadow-orange-500/5 transition-all duration-500 transform-style-3d">
+                  <div className="w-20 h-20 mb-8 relative">
+                    <div className="absolute inset-0 bg-orange-500/20 rounded-2xl rotate-6 group-hover:rotate-12 transition-transform duration-500 delay-100"></div>
+                    <div className="absolute inset-0 bg-black rounded-2xl flex items-center justify-center">
+                      {/* Replace SVG with React Icons */}
+                      <RiSearchLine className="h-10 w-10 text-orange-400 transform group-hover:scale-110 transition-transform duration-500" />
+                    </div>
+                  </div>
+                  <h3 className="text-2xl font-medium mb-4 group-hover:text-orange-400 transition-colors duration-300">
+                    Tìm kiếm và khám phá
+                  </h3>
+                  <p className="text-white/60 leading-relaxed text-lg">
+                    Dễ dàng tìm kiếm tài liệu bạn cần và khám phá những tài liệu
+                    mới dựa trên sở thích của bạn.
+                  </p>
+
+                  <div className="mt-8 pt-6 border-t border-white/5">
+                    <a
+                      href="#"
+                      className="group inline-flex items-center text-orange-400 hover:text-orange-300"
+                    >
+                      <span>Xem thêm</span>
+                      {/* Replace SVG with React Icons */}
+                      <FaArrowRight className="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform duration-300" />
+                    </a>
+                  </div>
+                </div>
+
+                {/* 3D effect elements */}
+                <div className="absolute inset-0 rounded-2xl border border-white/5 transform translate-z-20 pointer-events-none"></div>
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-orange-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform translate-z-10 pointer-events-none"></div>
               </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                Chia sẻ dễ dàng
-              </h3>
-              <p className="text-gray-600">
-                Đóng góp tài liệu một cách dễ dàng và nhanh chóng, giúp mở rộng
-                kho tàng kiến thức.
-              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Stats Section with Counter Animation */}
+      <section ref={statsRef} className="py-24 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-black/0 via-blue-950/10 to-black/0"></div>
+        <div className="container mx-auto px-8 relative">
+          <div className="max-w-screen-xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80">
+                Số liệu ấn tượng
+              </h2>
+              <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto mt-6"></div>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-x-12 gap-y-16">
+              <div className="stat-item opacity-0 scale-90 transition-all duration-700 text-center group">
+                <div className="relative">
+                  <div className="absolute -inset-4 rounded-xl bg-gradient-to-br from-blue-500/20 to-blue-600/0 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-700"></div>
+                  <div className="relative">
+                    <span
+                      className="counter-animation text-6xl md:text-7xl xl:text-8xl font-bold text-blue-400 tabular-nums"
+                      data-target="10000"
+                      data-suffix="+"
+                    >
+                      20+
+                    </span>
+                    <div className="text-white/60 text-sm uppercase tracking-widest mt-4 font-medium">
+                      Tài liệu
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="stat-item opacity-0 scale-90 transition-all duration-700 text-center group">
+                <div className="relative">
+                  <div className="absolute -inset-4 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-600/0 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-700"></div>
+                  <div className="relative">
+                    <span
+                      className="counter-animation text-6xl md:text-7xl xl:text-8xl font-bold text-purple-400 tabular-nums"
+                      data-target="5000"
+                      data-suffix="+"
+                    >
+                      5+
+                    </span>
+                    <div className="text-white/60 text-sm uppercase tracking-widest mt-4 font-medium">
+                      Thành viên
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="stat-item opacity-0 scale-90 transition-all duration-700 text-center group">
+                <div className="relative">
+                  <div className="absolute -inset-4 rounded-xl bg-gradient-to-br from-pink-500/20 to-pink-600/0 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-700"></div>
+                  <div className="relative">
+                    <span
+                      className="counter-animation text-6xl md:text-7xl xl:text-8xl font-bold text-pink-400 tabular-nums"
+                      data-target="200"
+                      data-suffix="+"
+                    >
+                      3+
+                    </span>
+                    <div className="text-white/60 text-sm uppercase tracking-widest mt-4 font-medium">
+                      Lĩnh vực
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="stat-item opacity-0 scale-90 transition-all duration-700 text-center group">
+                <div className="relative">
+                  <div className="absolute -inset-4 rounded-xl bg-gradient-to-br from-orange-500/20 to-orange-600/0 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-700"></div>
+                  <div className="relative">
+                    <span
+                      className="counter-animation text-6xl md:text-7xl xl:text-8xl font-bold text-orange-400 tabular-nums"
+                      data-target="4.8"
+                      data-suffix=" / 5"
+                    >
+                      5+
+                    </span>
+                    <div className="text-white/60 text-sm uppercase tracking-widest mt-4 font-medium">
+                      Đánh giá
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-800 text-white py-12">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div>
-              <h3 className="text-lg font-semibold mb-4">DocShare</h3>
-              <p className="text-gray-400">
+      <footer className="py-20 border-t border-white/10">
+        <div className="container mx-auto px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
+            <div className="lg:col-span-2">
+              <div className="flex items-center gap-3 mb-6">
+                <Image
+                  src="/logo.svg"
+                  alt="DocShare logo"
+                  width={32}
+                  height={32}
+                  priority
+                />
+                <span className="text-2xl font-light tracking-wider">
+                  DOCSHARE
+                </span>
+              </div>
+              <p className="text-white/60 max-w-xs">
                 Nền tảng chia sẻ tài liệu hàng đầu dành cho cộng đồng học tập và
-                nghiên cứu.
+                nghiên cứu toàn cầu.
               </p>
-            </div>
-
-            <div>
-              <h3 className="text-lg font-semibold mb-4">Liên kết nhanh</h3>
-              <ul className="space-y-2">
-                <li>
-                  <a href="#" className="text-gray-400 hover:text-white">
-                    Trang chủ
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-gray-400 hover:text-white">
-                    Tài liệu
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-gray-400 hover:text-white">
-                    Đăng tải
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-gray-400 hover:text-white">
-                    Cộng đồng
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="text-lg font-semibold mb-4">Hỗ trợ</h3>
-              <ul className="space-y-2">
-                <li>
-                  <a href="#" className="text-gray-400 hover:text-white">
-                    FAQ
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-gray-400 hover:text-white">
-                    Điều khoản sử dụng
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-gray-400 hover:text-white">
-                    Chính sách bảo mật
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-gray-400 hover:text-white">
-                    Liên hệ
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="text-lg font-semibold mb-4">Kết nối</h3>
-              <div className="flex space-x-4">
-                <a href="#" className="text-gray-400 hover:text-white">
+              <div className="flex space-x-4 mt-8">
+                <a
+                  href="#"
+                  className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white transition-colors duration-300"
+                >
                   <svg
-                    className="h-6 w-6"
+                    className="h-4 w-4"
                     fill="currentColor"
                     viewBox="0 0 24 24"
                   >
                     <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"></path>
                   </svg>
                 </a>
-                <a href="#" className="text-gray-400 hover:text-white">
+                <a
+                  href="#"
+                  className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white transition-colors duration-300"
+                >
                   <svg
-                    className="h-6 w-6"
+                    className="h-4 w-4"
                     fill="currentColor"
                     viewBox="0 0 24 24"
                   >
-                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
                   </svg>
                 </a>
-                <a href="#" className="text-gray-400 hover:text-white">
+                <a
+                  href="#"
+                  className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white transition-colors duration-300"
+                >
                   <svg
-                    className="h-6 w-6"
+                    className="h-4 w-4"
                     fill="currentColor"
                     viewBox="0 0 24 24"
                   >
@@ -252,9 +421,111 @@ export default function Home() {
                 </a>
               </div>
             </div>
+
+            <div>
+              <h3 className="text-sm uppercase tracking-widest mb-6">
+                Liên kết nhanh
+              </h3>
+              <ul className="space-y-4">
+                <li>
+                  <a
+                    href="#"
+                    className="text-white/60 hover:text-white transition-colors duration-300"
+                  >
+                    Trang chủ
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="text-white/60 hover:text-white transition-colors duration-300"
+                  >
+                    Tài liệu
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="text-white/60 hover:text-white transition-colors duration-300"
+                  >
+                    Đăng tải
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="text-white/60 hover:text-white transition-colors duration-300"
+                  >
+                    Cộng đồng
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="text-sm uppercase tracking-widest mb-6">Hỗ trợ</h3>
+              <ul className="space-y-4">
+                <li>
+                  <a
+                    href="#"
+                    className="text-white/60 hover:text-white transition-colors duration-300"
+                  >
+                    FAQ
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="text-white/60 hover:text-white transition-colors duration-300"
+                  >
+                    Điều khoản sử dụng
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="text-white/60 hover:text-white transition-colors duration-300"
+                  >
+                    Chính sách bảo mật
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="text-white/60 hover:text-white transition-colors duration-300"
+                  >
+                    Liên hệ
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="text-sm uppercase tracking-widest mb-6">
+                Đăng ký nhận tin
+              </h3>
+              <p className="text-white/60 mb-4">
+                Nhận thông báo về tài liệu mới và tin tức hàng tuần.
+              </p>
+              <form className="space-y-3">
+                <div>
+                  <input
+                    type="email"
+                    placeholder="Email của bạn"
+                    className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:border-blue-500"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="w-full bg-blue-600 hover:bg-blue-700 transition-colors duration-300 text-white py-3 rounded-lg text-sm uppercase tracking-widest"
+                >
+                  Đăng ký
+                </button>
+              </form>
+            </div>
           </div>
 
-          <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+          <div className="border-t border-white/10 mt-16 pt-8 text-center text-white/40">
             <p>
               &copy; {new Date().getFullYear()} DocShare. Tất cả các quyền được
               bảo lưu.
@@ -262,6 +533,63 @@ export default function Home() {
           </div>
         </div>
       </footer>
+
+      {/* Custom cursor */}
+      <div className="cursor-outer fixed w-8 h-8 rounded-full border-2 border-white pointer-events-none opacity-0 z-50 transition-transform duration-200 ease-out"></div>
+      <div className="cursor-inner fixed w-2 h-2 rounded-full bg-white pointer-events-none opacity-0 z-50 transition-transform duration-150 ease-out"></div>
+
+      {/* Cursor ripple effect */}
+      <div className="cursor-ripple fixed pointer-events-none z-40"></div>
+
+      {/* Global styles cho hiệu ứng */}
+      <style jsx global>{`
+        @keyframes blob {
+          0%,
+          100% {
+            transform: translate(0, 0) scale(1);
+          }
+          25% {
+            transform: translate(20px, -30px) scale(1.1);
+          }
+          50% {
+            transform: translate(-20px, 20px) scale(0.9);
+          }
+          75% {
+            transform: translate(-40px, -20px) scale(1.05);
+          }
+        }
+
+        .animate-blob {
+          animation: blob 10s infinite ease-in-out;
+        }
+
+        .animation-delay-2000 {
+          animation-delay: 2s;
+        }
+
+        @keyframes scroll {
+          0% {
+            transform: translateY(0);
+            opacity: 1;
+          }
+          30% {
+            opacity: 1;
+          }
+          100% {
+            transform: translateY(8px);
+            opacity: 0;
+          }
+        }
+
+        .animate-scroll {
+          animation: scroll 1.5s infinite;
+        }
+
+        .animate-in {
+          opacity: 1 !important;
+          transform: translateY(0) scale(1) !important;
+        }
+      `}</style>
     </div>
   );
 }
