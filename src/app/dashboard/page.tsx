@@ -3,6 +3,8 @@
 import { useAuth } from "@/hooks/use-auth";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { DocumentManager } from "@/components/documents/document-manager";
+import { Toaster } from "@/components/ui/sonner";
 
 export default function DashboardPage() {
   const { isAuthenticated, user, isLoading, logout } = useAuth();
@@ -66,6 +68,10 @@ export default function DashboardPage() {
           </div>
         </div>
 
+        <div className="bg-white/5 rounded-lg sm:rounded-xl p-5 sm:p-6 md:p-8 mb-6 sm:mb-8">
+          <DocumentManager />
+        </div>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           <div className="bg-white/5 rounded-lg sm:rounded-xl p-4 sm:p-6 hover:bg-white/10 transition-colors">
             <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3">Thông tin tài khoản</h3>
@@ -93,6 +99,7 @@ export default function DashboardPage() {
           </div>
         </div>
       </main>
+      <Toaster />
     </div>
   );
 }

@@ -93,6 +93,26 @@ export async function initDatabase() {
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
     `);
 
+    // Tạo bảng documents cho lưu trữ thông tin tài liệu
+    await connection.query(`
+      CREATE TABLE IF NOT EXISTS documents (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        userId INT NOT NULL,
+        title VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+        description TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+        fileType VARCHAR(50) NOT NULL,
+        fileSize BIGINT NOT NULL,
+        driveFileId VARCHAR(255) NOT NULL,
+        driveViewLink VARCHAR(255),
+        driveDownloadLink VARCHAR(255),
+        isPublic BOOLEAN DEFAULT FALSE,
+        tags VARCHAR(255),
+        createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    `);
+
     await connection.end();
     console.log('Đã khởi tạo cơ sở dữ liệu thành công');
   } catch (error) {
