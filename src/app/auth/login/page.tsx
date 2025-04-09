@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   AuthLayout,
   AuthForm,
@@ -10,15 +11,53 @@ import {
   AuthFooter,
   AuthSocialLogin
 } from "@/components/auth";
+import { useAuth } from "@/hooks/use-auth";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+  const [error, setError] = useState("");
+  const { login, loginWithGoogle, isLoading } = useAuth();
+  const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log({ email, password, rememberMe });
+    
+    if (!email || !password) {
+      setError("Vui lòng nhập đầy đủ thông tin");
+      return;
+    }
+    
+    try {
+      setError("");
+      const result = await login(email, password);
+      
+      if (!result.success) {
+        setError(result.error || "Email hoặc mật khẩu không chính xác");
+        return;
+      }
+      
+      // Chuyển hướng đến trang dashboard sau khi đăng nhập thành công
+      router.push("/dashboard");
+      router.refresh();
+    } catch (err) {
+      console.error("Lỗi đăng nhập:", err);
+      setError("Đã xảy ra lỗi khi đăng nhập");
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    try {
+      await loginWithGoogle();
+      
+      // Chuyển hướng đến trang dashboard sau khi đăng nhập thành công với Google
+      router.push("/dashboard");
+      router.refresh();
+    } catch (err) {
+      console.error("Lỗi đăng nhập Google:", err);
+      setError("Đã xảy ra lỗi khi đăng nhập với Google");
+    }
   };
 
   return (
@@ -28,6 +67,12 @@ export default function LoginPage() {
       variant="login"
     >
       <AuthForm onSubmit={handleSubmit}>
+        {error && (
+          <div className="p-3 mb-4 text-sm text-red-500 bg-red-100/10 rounded-lg border border-red-500/20">
+            {error}
+          </div>
+        )}
+        
         <AuthInput
           type="email"
           id="email"
@@ -73,13 +118,18 @@ export default function LoginPage() {
           </Link>
         </div>
 
-        <AuthButton type="submit" variant="primary">
-          Đăng nhập
+        <AuthButton type="submit" variant="primary" disabled={isLoading}>
+          {isLoading ? "Đang xử lý..." : "Đăng nhập"}
         </AuthButton>
 
         <AuthDivider text="hoặc tiếp tục với" />
 
-        <AuthSocialLogin provider="google" label="Đăng nhập với Google" />
+        <AuthSocialLogin 
+          provider="google" 
+          label="Đăng nhập với Google" 
+          onClick={handleGoogleSignIn}
+          disabled={isLoading}
+        />
       </AuthForm>
 
       <AuthFooter 

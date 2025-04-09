@@ -7,7 +7,7 @@ import SocialLinks from "./social-links";
 import NewsletterForm from "./newsletter-form";
 import { FooterLinkProps } from "@/types";
 
-export const Footer: React.FC = () => {
+const Footer: React.FC = () => {
   // Dữ liệu cho các nhóm liên kết
   const quickLinks: FooterLinkProps[] = [
     { href: "#", label: "Trang chủ" },

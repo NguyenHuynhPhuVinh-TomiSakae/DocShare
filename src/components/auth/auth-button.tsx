@@ -9,6 +9,7 @@ export function AuthButton({
   fullWidth = true,
   variant = "primary",
   className,
+  disabled,
 }: AuthButtonProps) {
   const baseClasses = "rounded-xl py-4 font-medium tracking-wide transition-all duration-300 relative overflow-hidden group";
   
@@ -18,19 +19,23 @@ export function AuthButton({
     outline: "border border-white/10 text-white/80 hover:bg-white/5"
   };
 
+  const disabledClasses = disabled ? "opacity-50 cursor-not-allowed pointer-events-none" : "";
+
   return (
     <button
       type={type}
       onClick={onClick}
+      disabled={disabled}
       className={cn(
         baseClasses,
         variantClasses[variant],
         fullWidth ? "w-full" : "",
+        disabledClasses,
         className
       )}
     >
       <span className="relative z-10">{children}</span>
-      {variant !== "outline" && (
+      {variant !== "outline" && !disabled && (
         <span className={`absolute inset-0 bg-gradient-to-r ${
           variant === "primary" 
             ? "from-blue-700 to-purple-700" 

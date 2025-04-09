@@ -1,7 +1,7 @@
 "use client";
 import { AuthSocialLoginProps } from "@/types/auth";
 
-export function AuthSocialLogin({ provider, label }: AuthSocialLoginProps) {
+export function AuthSocialLogin({ provider, label, onClick, disabled }: AuthSocialLoginProps) {
   const getProviderIcon = () => {
     switch (provider) {
       case "google":
@@ -51,8 +51,14 @@ export function AuthSocialLogin({ provider, label }: AuthSocialLoginProps) {
   return (
     <button
       type="button"
-      className="w-full flex items-center justify-center py-3 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-colors duration-300"
+      className={`w-full flex items-center justify-center py-3 bg-white/5 border border-white/10 rounded-xl transition-colors duration-300 ${
+        disabled 
+          ? "opacity-50 cursor-not-allowed" 
+          : "hover:bg-white/10"
+      }`}
       aria-label={label}
+      onClick={onClick}
+      disabled={disabled}
     >
       {getProviderIcon()}
       {label}

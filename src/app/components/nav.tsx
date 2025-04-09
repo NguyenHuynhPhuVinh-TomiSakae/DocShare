@@ -2,11 +2,15 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useSession, signOut } from "next-auth/react";
+import Link from "next/link";
 
 export default function Nav() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const router = useRouter();
+  const { data: session, status } = useSession();
+  const isAuthenticated = status === "authenticated";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -20,6 +24,10 @@ export default function Nav() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleLogout = async () => {
+    await signOut({ redirect: true, callbackUrl: "/" });
+  };
 
   return (
     <>
@@ -81,38 +89,67 @@ export default function Nav() {
             </nav>
 
             <div className="flex items-center gap-6">
-              <div className="hidden md:flex items-center gap-4">
-                <button
-                  onClick={() => router.push("/auth/login")}
-                  className=" cursor-pointer magnetic-element text-white/90 hover:text-white text-base uppercase tracking-widest transition-colors duration-300"
-                >
-                  Đăng nhập
-                </button>
-                <button
-                  onClick={() => router.push("/auth/register")}
-                  className=" cursor-pointer magnetic-element relative px-6 py-2 overflow-hidden rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white text-base uppercase tracking-widest"
-                >
-                  <span className="relative z-10">Đăng ký</span>
-                </button>
-              </div>
-
+              {isAuthenticated ? (
+                <div className="flex items-center gap-4">
+                  <div className="hidden md:flex items-center gap-3">
+                    {session?.user?.image ? (
+                      <Image 
+                        src={session.user.image}
+                        alt={session.user.name || "Người dùng"}
+                        width={32}
+                        height={32}
+                        className="rounded-full"
+                      />
+                    ) : (
+                      <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
+                        {session?.user?.name?.charAt(0) || "U"}
+                      </div>
+                    )}
+                    <span className="text-white/90 text-sm">
+                      {session?.user?.name || "Người dùng"}
+                    </span>
+                  </div>
+                  <button
+                    onClick={handleLogout}
+                    className="bg-white/10 hover:bg-white/20 text-white py-2 px-4 rounded-lg transition-colors duration-300"
+                  >
+                    Đăng xuất
+                  </button>
+                </div>
+              ) : (
+                <div className="flex items-center gap-4">
+                  <Link
+                    href="/auth/login"
+                    className="text-white/70 hover:text-white text-base transition-colors duration-300"
+                  >
+                    Đăng nhập
+                  </Link>
+                  <Link
+                    href="/auth/register"
+                    className="bg-white/10 hover:bg-white/20 text-white py-2 px-4 rounded-lg transition-colors duration-300"
+                  >
+                    Đăng ký
+                  </Link>
+                </div>
+              )}
+              
               <button
                 onClick={() => setMenuOpen(!menuOpen)}
-                className="menu-toggle-button magnetic-element flex flex-col gap-2 items-end group"
+                className="relative z-50 w-10 h-10 flex items-center justify-center"
               >
                 <span
-                  className={`block w-8 h-0.5 bg-white transition-all duration-300 ease-out ${
-                    menuOpen ? "rotate-45 translate-y-2.5" : ""
+                  className={`block w-6 h-0.5 bg-white absolute transform transition-transform duration-300 ${
+                    menuOpen ? "rotate-45" : "-translate-y-1.5"
                   }`}
                 ></span>
                 <span
-                  className={`block w-5 h-0.5 bg-white transition-all duration-300 ease-out ${
-                    menuOpen ? "opacity-0" : "group-hover:w-8"
+                  className={`block w-6 h-0.5 bg-white absolute transition-opacity duration-300 ${
+                    menuOpen ? "opacity-0" : "opacity-100"
                   }`}
                 ></span>
                 <span
-                  className={`block w-8 h-0.5 bg-white transition-all duration-300 ease-out ${
-                    menuOpen ? "-rotate-45 -translate-y-2.5" : ""
+                  className={`block w-6 h-0.5 bg-white absolute transform transition-transform duration-300 ${
+                    menuOpen ? "-rotate-45" : "translate-y-1.5"
                   }`}
                 ></span>
               </button>
@@ -139,6 +176,38 @@ export default function Nav() {
           <div className="absolute bottom-0 right-0 w-[50vw] h-[50vw] bg-blue-600/10 rounded-full blur-3xl translate-x-1/4 translate-y-1/3"></div>
 
           <div className="flex flex-col items-center justify-center gap-12">
+            {/* User Info (Mobile) */}
+            {isAuthenticated && (
+              <div className={`md:hidden flex flex-col items-center gap-4 ${
+                menuOpen
+                  ? "transform translate-y-0 opacity-100"
+                  : "transform translate-y-full opacity-0"
+              }`}>
+                {session?.user?.image ? (
+                  <Image 
+                    src={session.user.image}
+                    alt={session.user.name || "Người dùng"}
+                    width={64}
+                    height={64}
+                    className="rounded-full"
+                  />
+                ) : (
+                  <div className="w-16 h-16 rounded-full bg-blue-500 flex items-center justify-center text-white text-2xl">
+                    {session?.user?.name?.charAt(0) || "U"}
+                  </div>
+                )}
+                <span className="text-white text-xl">
+                  {session?.user?.name || "Người dùng"}
+                </span>
+                <button
+                  onClick={handleLogout}
+                  className="bg-white/10 hover:bg-white/20 text-white py-2 px-6 rounded-lg transition-colors duration-300 mt-2"
+                >
+                  Đăng xuất
+                </button>
+              </div>
+            )}
+            
             {/* Social Links */}
             <div
               className={`flex space-x-8 ${
