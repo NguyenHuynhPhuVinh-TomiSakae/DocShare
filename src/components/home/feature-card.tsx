@@ -51,27 +51,27 @@ export const FeatureCard: React.FC<FeatureCardProps> = ({
   return (
     <div className="feature-card group opacity-0 translate-y-8 transition-all duration-700 perspective">
       <div className="relative h-full transform-style-3d hover:rotate-y-10 hover:rotate-x-10 transition-transform duration-700">
-        <div className={`bg-black/40 backdrop-blur-md border border-white/10 rounded-2xl p-10 h-full ${colors.shadow} transition-all duration-500 transform-style-3d`}>
-          <div className="w-20 h-20 mb-8 relative">
+        <div className={`bg-black/40 backdrop-blur-md border border-white/10 rounded-2xl p-6 sm:p-8 md:p-10 h-full ${colors.shadow} transition-all duration-500 transform-style-3d`}>
+          <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 mb-5 sm:mb-6 md:mb-8 relative">
             <div className={`absolute inset-0 ${colors.bg} rounded-2xl rotate-6 group-hover:rotate-12 transition-transform duration-500 delay-100`}></div>
             <div className="absolute inset-0 bg-black rounded-2xl flex items-center justify-center">
               {icon}
             </div>
           </div>
-          <h3 className={`text-2xl font-medium mb-4 group-hover:${colors.text.split(' ')[0]} transition-colors duration-300`}>
+          <h3 className={`text-xl sm:text-2xl font-medium mb-3 sm:mb-4 group-hover:${colors.text.split(' ')[0]} transition-colors duration-300`}>
             {title}
           </h3>
-          <p className="text-white/60 leading-relaxed text-lg">
+          <p className="text-white/60 leading-relaxed text-base sm:text-lg">
             {description}
           </p>
 
-          <div className="mt-8 pt-6 border-t border-white/5">
+          <div className="mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-white/5">
             <a
               href={linkHref}
               className={`group inline-flex items-center ${colors.text}`}
             >
-              <span>{linkText}</span>
-              <FaArrowRight className="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform duration-300" />
+              <span className="text-sm sm:text-base">{linkText}</span>
+              <FaArrowRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2 transform group-hover:translate-x-1 transition-transform duration-300" />
             </a>
           </div>
         </div>

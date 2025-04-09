@@ -77,27 +77,27 @@ export default function TestimonialsSection({ testimonialsRef }: TestimonialsSec
   return (
     <section
       ref={testimonialsRef}
-      className="py-32 relative overflow-hidden"
+      className="py-16 sm:py-20 md:py-24 lg:py-32 relative overflow-hidden"
     >
       {/* Background decorations */}
       <div className="absolute inset-0">
         <div className="absolute top-0 left-0 w-full h-full bg-zinc-950"></div>
         <div className="absolute top-0 left-0 w-full h-full opacity-5 bg-[radial-gradient(#ffffff_1px,transparent_1px)] bg-[size:20px_20px]"></div>
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-[120px]"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-[120px]"></div>
+        <div className="absolute top-1/4 left-1/4 w-64 sm:w-80 md:w-96 h-64 sm:h-80 md:h-96 bg-purple-500/10 rounded-full blur-[120px]"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-64 sm:w-80 md:w-96 h-64 sm:h-80 md:h-96 bg-blue-500/10 rounded-full blur-[120px]"></div>
       </div>
 
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center mb-20">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="text-center mb-12 sm:mb-16 md:mb-20">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">
               Người dùng nói gì về chúng tôi
             </h2>
-            <p className="text-zinc-400 max-w-2xl mx-auto text-lg">
+            <p className="text-zinc-400 max-w-2xl mx-auto text-base sm:text-lg px-4 sm:px-0">
               Khám phá trải nghiệm của những người đã sử dụng DocShare để chia sẻ và quản lý tài liệu của họ.
             </p>
           </motion.div>
@@ -107,7 +107,7 @@ export default function TestimonialsSection({ testimonialsRef }: TestimonialsSec
           variants={containerVariants}
           initial="hidden"
           animate={controls}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10"
         >
           {testimonials.map((testimonial, index) => (
             <motion.div key={index} variants={itemVariants} className="h-full">
@@ -121,7 +121,7 @@ export default function TestimonialsSection({ testimonialsRef }: TestimonialsSec
         </motion.div>
 
         {/* Additional decorative elements */}
-        <div className="mt-20 flex justify-center">
+        <div className="mt-12 sm:mt-16 md:mt-20 flex justify-center">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

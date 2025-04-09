@@ -46,7 +46,7 @@ export default function CTASection({ ctaRef }: CTASectionProps) {
   return (
     <section
       ref={ctaRef}
-      className="py-32 relative overflow-hidden"
+      className="py-16 sm:py-20 md:py-24 lg:py-32 relative overflow-hidden"
     >
       {/* Background decorations */}
       <div className="absolute inset-0">
@@ -54,49 +54,49 @@ export default function CTASection({ ctaRef }: CTASectionProps) {
         <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] bg-center opacity-5"></div>
         
         {/* Animated gradient orbs */}
-        <div className="absolute -top-40 -left-40 w-96 h-96 bg-blue-600/10 rounded-full blur-[100px] animate-pulse"></div>
-        <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-purple-600/10 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute -top-20 sm:-top-40 -left-20 sm:-left-40 w-64 sm:w-80 md:w-96 h-64 sm:h-80 md:h-96 bg-blue-600/10 rounded-full blur-[100px] animate-pulse"></div>
+        <div className="absolute -bottom-20 sm:-bottom-40 -right-20 sm:-right-40 w-64 sm:w-80 md:w-96 h-64 sm:h-80 md:h-96 bg-purple-600/10 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: '1s' }}></div>
       </div>
 
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-4xl mx-auto bg-zinc-900/60 backdrop-blur-lg rounded-2xl border border-zinc-800 p-12 shadow-2xl">
+      <div className="container mx-auto px-4 sm:px-6 relative z-10">
+        <div className="max-w-4xl mx-auto bg-zinc-900/60 backdrop-blur-lg rounded-2xl border border-zinc-800 p-6 sm:p-8 md:p-12 shadow-2xl">
           <motion.div
             variants={containerVariants}
             initial="hidden"
             animate={controls}
             className="text-center"
           >
-            <motion.div variants={itemVariants} className="flex justify-center mb-8">
-              <div className="w-20 h-20 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 flex items-center justify-center">
-                <RocketIcon className="w-10 h-10 text-white" />
+            <motion.div variants={itemVariants} className="flex justify-center mb-6 sm:mb-8">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 flex items-center justify-center">
+                <RocketIcon className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
               </div>
             </motion.div>
             
             <motion.h2
               variants={itemVariants}
-              className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500"
+              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500"
             >
               Sẵn sàng bắt đầu chia sẻ tài liệu một cách hiệu quả?
             </motion.h2>
             
             <motion.p
               variants={itemVariants}
-              className="text-zinc-400 mb-10 text-lg md:text-xl"
+              className="text-zinc-400 mb-6 sm:mb-8 md:mb-10 text-base sm:text-lg md:text-xl px-2"
             >
               Đăng ký miễn phí ngay hôm nay và khám phá cách DocShare có thể cải thiện quy trình làm việc của bạn.
             </motion.p>
             
             <motion.div
               variants={itemVariants}
-              className="flex flex-col sm:flex-row gap-6 justify-center"
+              className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center"
             >
               <Button
                 asChild
                 size="lg"
-                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-0 h-14 px-8 text-lg rounded-full shadow-lg shadow-blue-700/20 hover:shadow-blue-700/40 transition-all duration-300"
+                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-0 h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg rounded-full shadow-lg shadow-blue-700/20 hover:shadow-blue-700/40 transition-all duration-300"
               >
                 <Link href="/register" className="flex items-center gap-2">
-                  <LightningBoltIcon className="w-5 h-5" />
+                  <LightningBoltIcon className="w-4 h-4 sm:w-5 sm:h-5" />
                   <span>Đăng ký miễn phí</span>
                 </Link>
               </Button>
@@ -105,7 +105,7 @@ export default function CTASection({ ctaRef }: CTASectionProps) {
                 asChild
                 variant="outline"
                 size="lg"
-                className="border-zinc-700 hover:bg-zinc-800 h-14 px-8 text-lg rounded-full"
+                className="border-zinc-700 hover:bg-zinc-800 h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg rounded-full"
               >
                 <Link href="/about">
                   Tìm hiểu thêm
@@ -115,7 +115,7 @@ export default function CTASection({ ctaRef }: CTASectionProps) {
             
             <motion.p
               variants={itemVariants}
-              className="text-zinc-500 mt-8 text-sm"
+              className="text-zinc-500 mt-6 sm:mt-8 text-xs sm:text-sm"
             >
               Không cần thẻ tín dụng. Không có cam kết. Hủy bất cứ lúc nào.
             </motion.p>

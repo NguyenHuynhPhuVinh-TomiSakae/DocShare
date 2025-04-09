@@ -6,7 +6,7 @@ export function AuthForm({ children, onSubmit }: AuthFormProps) {
   return (
     <motion.form
       onSubmit={onSubmit}
-      className="space-y-8"
+      className="space-y-6 sm:space-y-8"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{

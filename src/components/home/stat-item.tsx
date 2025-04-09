@@ -46,16 +46,16 @@ export const StatItem: React.FC<StatItemProps> = ({
   return (
     <div className="stat-item opacity-0 scale-90 transition-all duration-700 text-center group">
       <div className="relative">
-        <div className={`absolute -inset-4 rounded-xl bg-gradient-to-br ${colors.bg} opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-700`}></div>
+        <div className={`absolute -inset-2 sm:-inset-3 md:-inset-4 rounded-xl bg-gradient-to-br ${colors.bg} opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-700`}></div>
         <div className="relative">
           <span
-            className={`counter-animation text-6xl md:text-7xl xl:text-8xl font-bold ${colors.text} tabular-nums`}
+            className={`counter-animation text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold ${colors.text} tabular-nums`}
             data-target={target}
             data-suffix={suffix}
           >
             {value}
           </span>
-          <div className="text-white/60 text-sm uppercase tracking-widest mt-4 font-medium">
+          <div className="text-white/60 text-xs sm:text-sm uppercase tracking-widest mt-2 sm:mt-3 md:mt-4 font-medium">
             {label}
           </div>
         </div>

@@ -52,35 +52,38 @@ const Footer: React.FC = () => {
   ];
 
   return (
-    <footer className="py-20 border-t border-white/10">
-      <div className="container mx-auto px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
+    <footer className="py-12 sm:py-16 md:py-20 border-t border-white/10">
+      <div className="container mx-auto px-4 sm:px-6 md:px-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 md:gap-12">
           <div className="lg:col-span-2">
-            <div className="flex items-center gap-3 mb-6">
+            <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
               <Image
                 src="/logo.svg"
                 alt="DocShare logo"
-                width={32}
-                height={32}
+                width={28}
+                height={28}
+                className="w-7 h-7 sm:w-8 sm:h-8"
                 priority
               />
-              <span className="text-2xl font-light tracking-wider">
+              <span className="text-xl sm:text-2xl font-light tracking-wider">
                 DOCSHARE
               </span>
             </div>
-            <p className="text-white/60 max-w-xs">
+            <p className="text-white/60 max-w-xs text-sm sm:text-base">
               Nền tảng chia sẻ tài liệu hàng đầu dành cho cộng đồng học tập và
               nghiên cứu toàn cầu.
             </p>
             <SocialLinks links={socialLinks} />
           </div>
 
-          <FooterLinkGroup title="Liên kết nhanh" links={quickLinks} />
-          <FooterLinkGroup title="Hỗ trợ" links={supportLinks} />
-          <NewsletterForm />
+          <div className="sm:col-span-2 lg:col-span-3 grid grid-cols-1 sm:grid-cols-3 gap-8">
+            <FooterLinkGroup title="Liên kết nhanh" links={quickLinks} />
+            <FooterLinkGroup title="Hỗ trợ" links={supportLinks} />
+            <NewsletterForm />
+          </div>
         </div>
 
-        <div className="border-t border-white/10 mt-16 pt-8 text-center text-white/40">
+        <div className="border-t border-white/10 mt-10 sm:mt-12 md:mt-16 pt-6 sm:pt-8 text-center text-white/40 text-xs sm:text-sm">
           <p>
             &copy; {new Date().getFullYear()} DocShare. Tất cả các quyền được
             bảo lưu.

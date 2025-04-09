@@ -19,7 +19,7 @@ export function AuthLayout({
     <div className={`${variant}-page-wrapper min-h-screen bg-black text-white overflow-hidden flex flex-col`}>
 
       {/* Main Content */}
-      <main className="relative z-10 flex-1 flex items-center justify-center px-6 py-12 mt-10">
+      <main className="relative z-10 flex-1 flex items-center justify-center px-4 sm:px-6 py-8 sm:py-12 mt-6 sm:mt-10">
         <div className="w-full max-w-md">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -29,11 +29,11 @@ export function AuthLayout({
               ease: [0.22, 1, 0.36, 1],
               staggerChildren: 0.1,
             }}
-            className="space-y-12"
+            className="space-y-8 sm:space-y-12"
           >
             <div className="text-center">
               <motion.h1
-                className="text-5xl font-bold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-white/90"
+                className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2 sm:mb-3 bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-white/90"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{
@@ -44,7 +44,7 @@ export function AuthLayout({
                 {title}
               </motion.h1>
               <motion.p
-                className="text-white/60"
+                className="text-white/60 text-sm sm:text-base"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{

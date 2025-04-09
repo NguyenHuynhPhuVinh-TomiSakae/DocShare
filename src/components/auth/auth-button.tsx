@@ -11,11 +11,11 @@ export function AuthButton({
   className,
   disabled,
 }: AuthButtonProps) {
-  const baseClasses = "rounded-xl py-4 font-medium tracking-wide transition-all duration-300 relative overflow-hidden group";
+  const baseClasses = "rounded-lg sm:rounded-xl py-3 sm:py-4 text-sm sm:text-base font-medium tracking-wide transition-all duration-300 relative overflow-hidden group";
   
   const variantClasses = {
-    primary: "bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:shadow-xl hover:shadow-blue-500/20",
-    secondary: "bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:shadow-xl hover:shadow-purple-500/20",
+    primary: "bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:shadow-lg hover:shadow-blue-500/20",
+    secondary: "bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:shadow-lg hover:shadow-purple-500/20",
     outline: "border border-white/10 text-white/80 hover:bg-white/5"
   };
 

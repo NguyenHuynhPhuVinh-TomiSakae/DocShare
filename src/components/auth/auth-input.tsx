@@ -52,7 +52,7 @@ export function AuthInput({
     <div
       ref={wrapperRef}
       className={cn(
-        "field-wrapper relative mb-6",
+        "field-wrapper relative mb-4 sm:mb-6",
         value ? "focused" : ""
       )}
     >
@@ -63,13 +63,13 @@ export function AuthInput({
         name={name}
         value={value}
         onChange={onChange}
-        className="input-field w-full bg-white/5 border border-white/10 rounded-xl px-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50 transition-all duration-300"
+        className="input-field w-full bg-white/5 border border-white/10 rounded-lg sm:rounded-xl px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50 transition-all duration-300"
         placeholder=" "
         required={required}
       />
       <label
         htmlFor={id}
-        className="absolute left-6 top-4 text-white/60 transition-all duration-200 pointer-events-none"
+        className="absolute left-4 sm:left-6 top-3 sm:top-4 text-sm sm:text-base text-white/60 transition-all duration-200 pointer-events-none"
       >
         {label}
       </label>
@@ -77,8 +77,16 @@ export function AuthInput({
         .field-wrapper.focused label,
         input:focus ~ label,
         input:not(:placeholder-shown) ~ label {
-          transform: translateY(-20px) scale(0.8);
+          transform: translateY(-18px) scale(0.8);
           color: rgba(255, 255, 255, 0.8);
+        }
+        
+        @media (min-width: 640px) {
+          .field-wrapper.focused label,
+          input:focus ~ label,
+          input:not(:placeholder-shown) ~ label {
+            transform: translateY(-20px) scale(0.8);
+          }
         }
       `}</style>
     </div>

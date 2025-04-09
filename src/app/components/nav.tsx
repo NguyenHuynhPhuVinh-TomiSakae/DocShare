@@ -3,11 +3,13 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
-import Link from "next/link";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { HamburgerMenu } from "@/components/ui/hamburger-menu";
+import { Twitter, Instagram, Linkedin } from "lucide-react";
 
 export default function Nav() {
-  const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [sheetOpen, setSheetOpen] = useState(false);
   const router = useRouter();
   const { data: session, status } = useSession();
   const isAuthenticated = status === "authenticated";
@@ -29,6 +31,11 @@ export default function Nav() {
     await signOut({ redirect: true, callbackUrl: "/" });
   };
 
+  const handleNavigation = (path: string) => {
+    router.push(path);
+    setSheetOpen(false);
+  };
+
   return (
     <>
       <header
@@ -36,15 +43,15 @@ export default function Nav() {
           scrolled ? "py-4 backdrop-blur-md bg-black/20" : "py-8"
         }`}
       >
-        <div className="container mx-auto px-8">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             <div
-              className="flex items-center gap-4 cursor-pointer"
+              className="flex items-center gap-2 sm:gap-4 cursor-pointer"
               onClick={() => router.push("/")}
             >
               <div className="magnetic-element">
                 <Image
-                  className="hover:rotate-12 transition-transform duration-300"
+                  className="hover:rotate-12 transition-transform duration-300 w-8 h-8 sm:w-10 sm:h-10"
                   src="/logo.svg"
                   alt="DocShare logo"
                   width={40}
@@ -52,12 +59,13 @@ export default function Nav() {
                   priority
                 />
               </div>
-              <span className="text-2xl font-light tracking-widest">
+              <span className="text-xl sm:text-2xl font-light tracking-widest">
                 DOCSHARE
               </span>
             </div>
 
-            <nav className="hidden lg:flex space-x-12">
+            {/* Desktop Navigation */}
+            <nav className="hidden lg:flex space-x-8 xl:space-x-12">
               <div
                 onClick={() => router.push("/")}
                 className="text-white/70 hover:text-white text-base uppercase tracking-widest transition-colors duration-300 py-2 relative magnetic-link cursor-pointer"
@@ -88,202 +96,194 @@ export default function Nav() {
               </div>
             </nav>
 
-            <div className="flex items-center gap-6">
-              {isAuthenticated ? (
-                <div className="flex items-center gap-4">
-                  <div className="hidden md:flex items-center gap-3">
-                    {session?.user?.image ? (
-                      <Image 
-                        src={session.user.image}
-                        alt={session.user.name || "Người dùng"}
-                        width={32}
-                        height={32}
-                        className="rounded-full"
-                      />
-                    ) : (
-                      <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
-                        {session?.user?.name?.charAt(0) || "U"}
-                      </div>
-                    )}
-                    <span className="text-white/90 text-sm">
-                      {session?.user?.name || "Người dùng"}
-                    </span>
-                  </div>
+            {/* Desktop Auth Buttons */}
+            <div className="hidden lg:flex items-center space-x-6">
+              {!isAuthenticated ? (
+                <>
                   <button
-                    onClick={handleLogout}
-                    className="bg-white/10 hover:bg-white/20 text-white py-2 px-4 rounded-lg transition-colors duration-300"
-                  >
-                    Đăng xuất
-                  </button>
-                </div>
-              ) : (
-                <div className="flex items-center gap-4">
-                  <Link
-                    href="/auth/login"
-                    className="text-white/70 hover:text-white text-base transition-colors duration-300"
+                    onClick={() => router.push("/auth/login")}
+                    className="text-white/80 hover:text-white text-base uppercase tracking-widest transition-colors duration-300 magnetic-button"
                   >
                     Đăng nhập
-                  </Link>
-                  <Link
-                    href="/auth/register"
-                    className="bg-white/10 hover:bg-white/20 text-white py-2 px-4 rounded-lg transition-colors duration-300"
+                  </button>
+                  <button
+                    onClick={() => router.push("/auth/register")}
+                    className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white py-2 px-6 rounded-full transition-all duration-300 transform hover:scale-105 magnetic-button"
                   >
                     Đăng ký
-                  </Link>
+                  </button>
+                </>
+              ) : (
+                <div
+                  onClick={() => router.push("/dashboard")}
+                  className="flex items-center gap-3 cursor-pointer group"
+                >
+                  {session?.user?.image ? (
+                    <Image
+                      src={session.user.image}
+                      alt={session.user.name || "Người dùng"}
+                      width={40}
+                      height={40}
+                      className="rounded-full border-2 border-transparent group-hover:border-white/30 transition-all duration-300"
+                    />
+                  ) : (
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white text-lg border-2 border-transparent group-hover:border-white/30 transition-all duration-300">
+                      {session?.user?.name?.charAt(0) || "U"}
+                    </div>
+                  )}
+                  <span className="text-white/80 group-hover:text-white transition-colors duration-300">
+                    {session?.user?.name || "Người dùng"}
+                  </span>
                 </div>
               )}
-              
-              <button
-                onClick={() => setMenuOpen(!menuOpen)}
-                className="relative z-50 w-10 h-10 flex items-center justify-center"
-              >
-                <span
-                  className={`block w-6 h-0.5 bg-white absolute transform transition-transform duration-300 ${
-                    menuOpen ? "rotate-45" : "-translate-y-1.5"
-                  }`}
-                ></span>
-                <span
-                  className={`block w-6 h-0.5 bg-white absolute transition-opacity duration-300 ${
-                    menuOpen ? "opacity-0" : "opacity-100"
-                  }`}
-                ></span>
-                <span
-                  className={`block w-6 h-0.5 bg-white absolute transform transition-transform duration-300 ${
-                    menuOpen ? "-rotate-45" : "translate-y-1.5"
-                  }`}
-                ></span>
-              </button>
+            </div>
+
+            {/* Mobile Menu Button */}
+            <div className="lg:hidden">
+              <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
+                <SheetTrigger asChild>
+                  <div className="cursor-pointer">
+                    <HamburgerMenu isOpen={sheetOpen} toggle={() => setSheetOpen(!sheetOpen)} />
+                  </div>
+                </SheetTrigger>
+                <SheetContent side="right" className="w-full sm:w-80 bg-gradient-to-b from-gray-900 to-black border-l border-white/10 p-0">
+                  <div className="flex flex-col h-full">
+                    {/* Mobile Menu Header */}
+                    <div className="p-6 border-b border-white/10">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <Image
+                            src="/logo.svg"
+                            alt="DocShare logo"
+                            width={32}
+                            height={32}
+                          />
+                          <span className="text-xl font-light tracking-widest">
+                            DOCSHARE
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Mobile Menu Content */}
+                    <div className="flex-1 overflow-y-auto py-6 px-6">
+                      {/* Navigation Links */}
+                      <nav className="flex flex-col space-y-6 mb-8">
+                        <div
+                          onClick={() => handleNavigation("/")}
+                          className="text-white/70 hover:text-white text-lg uppercase tracking-widest transition-colors duration-300 py-2 relative cursor-pointer"
+                        >
+                          Trang chủ
+                        </div>
+                        <div
+                          onClick={() => handleNavigation("/tai-lieu")}
+                          className="text-white/70 hover:text-white text-lg uppercase tracking-widest transition-colors duration-300 py-2 relative cursor-pointer"
+                        >
+                          Tài liệu
+                        </div>
+                        <div
+                          onClick={() => handleNavigation("/tinh-nang")}
+                          className="text-white/70 hover:text-white text-lg uppercase tracking-widest transition-colors duration-300 py-2 relative cursor-pointer"
+                        >
+                          Tính năng
+                        </div>
+                        <div
+                          onClick={() => handleNavigation("/lien-he")}
+                          className="text-white/70 hover:text-white text-lg uppercase tracking-widest transition-colors duration-300 py-2 relative cursor-pointer"
+                        >
+                          Liên hệ
+                        </div>
+                      </nav>
+
+                      {/* Auth Buttons */}
+                      <div className="space-y-4 mb-8">
+                        {!isAuthenticated ? (
+                          <>
+                            <button
+                              onClick={() => handleNavigation("/auth/login")}
+                              className="w-full text-center bg-white/10 hover:bg-white/20 text-white py-3 px-6 rounded-lg transition-colors duration-300"
+                            >
+                              Đăng nhập
+                            </button>
+                            <button
+                              onClick={() => handleNavigation("/auth/register")}
+                              className="w-full text-center bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white py-3 px-6 rounded-lg transition-all duration-300"
+                            >
+                              Đăng ký
+                            </button>
+                          </>
+                        ) : (
+                          <div className="bg-white/5 rounded-lg p-4 flex flex-col items-center">
+                            {session?.user?.image ? (
+                              <Image
+                                src={session.user.image}
+                                alt={session.user.name || "Người dùng"}
+                                width={64}
+                                height={64}
+                                className="rounded-full mb-3"
+                              />
+                            ) : (
+                              <div className="w-16 h-16 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white text-2xl mb-3">
+                                {session?.user?.name?.charAt(0) || "U"}
+                              </div>
+                            )}
+                            <span className="text-white text-lg mb-3">
+                              {session?.user?.name || "Người dùng"}
+                            </span>
+                            <div className="flex space-x-3 w-full">
+                              <button
+                                onClick={() => handleNavigation("/dashboard")}
+                                className="flex-1 bg-white/10 hover:bg-white/20 text-white py-2 px-4 rounded-lg transition-colors duration-300"
+                              >
+                                Dashboard
+                              </button>
+                              <button
+                                onClick={handleLogout}
+                                className="flex-1 bg-white/10 hover:bg-white/20 text-white py-2 px-4 rounded-lg transition-colors duration-300"
+                              >
+                                Đăng xuất
+                              </button>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Social Links */}
+                      <div className="flex justify-center space-x-6">
+                        <a
+                          href="#"
+                          className="text-white/70 hover:text-blue-400 transition-colors duration-300"
+                        >
+                          <Twitter className="h-6 w-6" />
+                        </a>
+                        <a
+                          href="#"
+                          className="text-white/70 hover:text-pink-400 transition-colors duration-300"
+                        >
+                          <Instagram className="h-6 w-6" />
+                        </a>
+                        <a
+                          href="#"
+                          className="text-white/70 hover:text-blue-400 transition-colors duration-300"
+                        >
+                          <Linkedin className="h-6 w-6" />
+                        </a>
+                      </div>
+                    </div>
+
+                    {/* Mobile Menu Footer */}
+                    <div className="p-6 border-t border-white/10">
+                      <p className="text-white/50 text-sm text-center">
+                        2025 DocShare. Tất cả các quyền được bảo lưu.
+                      </p>
+                    </div>
+                  </div>
+                </SheetContent>
+              </Sheet>
             </div>
           </div>
         </div>
       </header>
-
-      {/* Full Screen Menu */}
-      <div
-        className={`fixed inset-0 z-40 bg-black/90 backdrop-blur-md flex items-center justify-center transition-all duration-700 ease-in-out ${
-          menuOpen
-            ? "opacity-100 pointer-events-auto"
-            : "opacity-0 pointer-events-none"
-        }`}
-        style={{
-          opacity: menuOpen ? 1 : 0,
-          pointerEvents: menuOpen ? "auto" : "none",
-        }}
-      >
-        <div className="container mx-auto px-8 relative">
-          {/* Animated Background Circles */}
-          <div className="absolute top-0 left-0 w-[40vw] h-[40vw] bg-purple-600/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/4"></div>
-          <div className="absolute bottom-0 right-0 w-[50vw] h-[50vw] bg-blue-600/10 rounded-full blur-3xl translate-x-1/4 translate-y-1/3"></div>
-
-          <div className="flex flex-col items-center justify-center gap-12">
-            {/* User Info (Mobile) */}
-            {isAuthenticated && (
-              <div className={`md:hidden flex flex-col items-center gap-4 ${
-                menuOpen
-                  ? "transform translate-y-0 opacity-100"
-                  : "transform translate-y-full opacity-0"
-              }`}>
-                {session?.user?.image ? (
-                  <Image 
-                    src={session.user.image}
-                    alt={session.user.name || "Người dùng"}
-                    width={64}
-                    height={64}
-                    className="rounded-full"
-                  />
-                ) : (
-                  <div className="w-16 h-16 rounded-full bg-blue-500 flex items-center justify-center text-white text-2xl">
-                    {session?.user?.name?.charAt(0) || "U"}
-                  </div>
-                )}
-                <span className="text-white text-xl">
-                  {session?.user?.name || "Người dùng"}
-                </span>
-                <button
-                  onClick={handleLogout}
-                  className="bg-white/10 hover:bg-white/20 text-white py-2 px-6 rounded-lg transition-colors duration-300 mt-2"
-                >
-                  Đăng xuất
-                </button>
-              </div>
-            )}
-            
-            {/* Social Links */}
-            <div
-              className={`flex space-x-8 ${
-                menuOpen
-                  ? "transform translate-y-0 opacity-100"
-                  : "transform translate-y-full opacity-0"
-              }`}
-            >
-              <a
-                href="#"
-                className="text-white/70 hover:text-blue-400 transition-colors duration-300"
-              >
-                {/* <FaTwitter className="h-6 w-6" /> */}
-                Twitter
-              </a>
-              <a
-                href="#"
-                className="text-white/70 hover:text-blue-400 transition-colors duration-300"
-              >
-                {/* <FaInstagram className="h-6 w-6" /> */}
-                Instagram
-              </a>
-              <a
-                href="#"
-                className="text-white/70 hover:text-blue-400 transition-colors duration-300"
-              >
-                {/* <FaLinkedin className="h-6 w-6" /> */}
-                LinkedIn
-              </a>
-            </div>
-
-            {/* Call to Action */}
-            <div
-              className={`${
-                menuOpen
-                  ? "transform translate-y-0 opacity-100"
-                  : "transform translate-y-full opacity-0"
-              }`}
-            >
-              <div className="bg-white/5 backdrop-blur-xl rounded-3xl p-8 border border-white/10 shadow-2xl text-center">
-                <h3 className="text-3xl font-semibold mb-4 text-white">
-                  Hướng dẫn sử dụng
-                </h3>
-                <p className="text-white/70 text-lg mb-4">
-                  Chào mừng bạn đến với DocShare! Dưới đây là một vài hướng dẫn
-                  nhanh để giúp bạn bắt đầu:
-                </p>
-
-                <ul className="text-white/70 space-y-6">
-                  <li>
-                    <span className="font-semibold text-blue-400">
-                      Tìm kiếm:
-                    </span>
-                    &nbsp;Sử dụng thanh tìm kiếm để nhanh chóng tìm thấy tài
-                    liệu bạn cần.
-                  </li>
-                  <li>
-                    <span className="font-semibold text-blue-400">
-                      Chia sẻ:
-                    </span>
-                    &nbsp;Dễ dàng tải lên và chia sẻ tài liệu của bạn với cộng
-                    đồng.
-                  </li>
-                  <li>
-                    <span className="font-semibold text-blue-400">
-                      Khám phá:
-                    </span>
-                    &nbsp;Duyệt qua các danh mục hoặc xem các tài liệu được đề
-                    xuất để tìm nội dung mới.
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </>
   );
 }
