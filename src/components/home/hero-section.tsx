@@ -2,7 +2,15 @@
 
 import React from "react";
 
-export const HeroSection: React.FC = () => {
+interface HeroSectionProps {
+  howItWorksRef: React.RefObject<HTMLElement | null>;
+}
+
+export const HeroSection: React.FC<HeroSectionProps> = ({ howItWorksRef }) => {
+  const scrollToHowItWorks = () => {
+    howItWorksRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <section className="min-h-screen flex flex-col justify-center relative overflow-hidden mt-10">
       {/* WebGL Canvas Background */}
@@ -45,8 +53,8 @@ export const HeroSection: React.FC = () => {
             </p>
 
             <div className="flex flex-wrap gap-6 justify-center pt-8">
-              <a
-                href="#features"
+              <button
+                onClick={scrollToHowItWorks}
                 className="magnetic-button group relative px-10 py-5 overflow-hidden rounded-full"
               >
                 <span className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 opacity-90 group-hover:opacity-100 transition-opacity duration-500"></span>
@@ -54,7 +62,7 @@ export const HeroSection: React.FC = () => {
                 <span className="relative z-10 text-white text-lg uppercase tracking-wider font-medium">
                   Khám phá ngay
                 </span>
-              </a>
+              </button>
 
               <a
                 href="/auth/login"

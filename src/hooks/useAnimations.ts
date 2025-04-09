@@ -5,6 +5,9 @@ import { useEffect, useRef } from "react";
 export const useAnimations = () => {
   const featuresRef = useRef<HTMLElement | null>(null);
   const statsRef = useRef<HTMLElement | null>(null);
+  const testimonialsRef = useRef<HTMLElement | null>(null);
+  const howItWorksRef = useRef<HTMLElement | null>(null);
+  const ctaRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -33,7 +36,7 @@ export const useAnimations = () => {
     };
   }, []);
 
-  return { featuresRef, statsRef };
+  return { featuresRef, statsRef, testimonialsRef, howItWorksRef, ctaRef };
 };
 
 export default useAnimations;
